@@ -1,0 +1,21 @@
+﻿@model MyMovie.Models.Genre
+
+<div class="k-content">
+    @(Html.Kendo().Form<MyMovie.Models.Genre>()
+        .Name("formGenre")
+        .HtmlAttributes(new { action="Create",method="POST"})
+        .Items(items =>
+        {
+            items.AddGroup()
+                .Label("Genre Form")
+                .Items(i =>
+                {
+                    i.Add()
+                        .Field(f => f.Name)
+                        .Label(l => l.Text("Genre"));
+                });
+                
+        })
+    )
+</div>
+

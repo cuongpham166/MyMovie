@@ -1,0 +1,103 @@
+﻿@*@model MyMovie.ViewModel.MovieGenreViewModel*@
+
+@model MyMovie.Models.Movie
+
+    <div class="k-content">
+        @(Html.Kendo().Form<MyMovie.Models.Movie>()
+            .Name("formMovie")
+            .HtmlAttributes(new { action = "Create", method = "POST" })
+            .Items(items =>
+            {
+                items.AddGroup()
+                    .Label("Movie Form")
+                    .Items(i =>
+                    {
+                        i.Add()
+                            .Field(f => f.Title)
+                            .Label(l => l.Text("Title"));
+
+                        i.Add()
+                            .Field(f => f.Score)
+                            .Label(l => l.Text("Movie Score"))
+                            .Editor(e =>
+                            {
+                                e.NumericTextBox()
+                                    .Min(0)
+                                    .Max(10);
+                            });
+
+                        i.Add()
+                            .Field(f => f.Rating)
+                            .Label(l => l.Text("Your Rating"))
+                            .Editor(e =>
+                            {
+                                e.Rating()
+                                    .Min(0)
+                                    .Max(10)
+                                    .Precision("half")
+                                    .ItemTemplate("<i class='k-icon k-i-heart-outline'></i>")
+                                    .SelectedTemplate("<i class='k-icon k-i-heart'></i>")
+                                    .HoveredTemplate("<i class='k-icon k-i-heart'></i>");
+                            });
+
+                        i.Add()
+                            .Field(f => f.GenreId)
+                            .Label(l => l.Text("Genre"))
+                            .Editor(e =>
+                            {
+                                e.ComboBox()
+                                    .HtmlAttributes(new { })
+                                    .Placeholder("Select movie genre")
+                                    .DataTextField("Name")
+                                    .DataValueField("Id")
+                                    .HtmlAttributes(new { style = "width:100%" })
+                                    .Height(520)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetGenres", "Movie");
+                                        });
+                                    });
+                            });
+
+                        i.Add()
+                            .Field(f => f.ReleaseDate)
+                            .Label(l => l.Text("Release Date"))
+                            .Editor(e =>
+                            {
+                                e.DatePicker()
+                                    .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
+                                    .ComponentType("modern")
+                                    .DateInput();
+                            });
+
+                        i.Add()
+                            .Field(f => f.ImageUrl)
+                            .Label(l => l.Text("Image URL"));
+
+                        i.Add()
+                            .Field(f => f.Overview)
+                            .Label(l => l.Text("Overview"))
+                            .EditorTemplateHandler("customTextareaEditor");
+
+
+
+
+
+
+                    });
+            })
+
+
+        )
+    </div>
+
+  
+        <script>
+            function customTextareaEditor(container, options) {
+                $('<textarea class="k-textarea" data-bind="value: ' + options.field + '" name="' + options.field + '"/>')
+                    .appendTo(container);
+            }
+        </script>
+

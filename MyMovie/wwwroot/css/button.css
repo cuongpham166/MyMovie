@@ -1,0 +1,20 @@
+﻿a.k-button.k-button-icontext.k-grid-edit, a.k-button.k-button-icontext.k-grid-delete {
+    width: 90px;
+}
+
+a.k-button.k-button-icontext.k-grid-edit {
+    margin-bottom: 10px;
+    background: teal;
+    color: white;
+}
+
+a.k-button.k-button-icontext.k-grid-delete {
+    background: crimson;
+    color: white;
+}
+
+a.k-button.create_button {
+    background: #0275d8;
+    color: white;
+}
+

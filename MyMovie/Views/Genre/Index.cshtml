@@ -1,0 +1,47 @@
+﻿@model IEnumerable<MyMovie.Models.Genre>
+@section Styles{
+    <link rel="stylesheet" href="~/css/button.css" />
+}
+@{
+    ViewData["Title"] = "Index";
+}
+
+@addTagHelper *, Kendo.Mvc
+@(Html.Kendo().Grid(Model)
+    .Name("grid")
+    .Columns(columns =>
+    {
+        columns.Bound(f => f.Id);
+        columns.Bound(f => f.Name);
+        //columns.Command(command => command.Destroy()).Width(150);
+        columns.Command(command => { command.Edit(); command.Destroy(); }).Width(150).HtmlAttributes(new {style="text-align: center;"});
+    })
+
+    .ToolBar(tools =>
+    {
+        tools.ClientTemplate(
+            "<a class='k-button create_button' href='" + Url.Action("Create", "Genre") + "' " + ">Add new genre</a>"
+            +
+            "<span class='k-textbox k-grid-search k-display-flex'> " +
+                "<input autocomplete='off' placeholder='Search...' title='Search...' class='k-input'> " +
+                "<span class='k-input-icon'> <span class='k-icon k-i-search'></span></span>" +
+            "</span>"
+        );
+
+    })
+    .Editable(editable => editable.Mode(GridEditMode.PopUp))
+    .Pageable()
+    .Sortable()
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .Model(model => model.Id(genre => genre.Id)) //WICHTIG !!!!!!
+        .PageSize(6)
+        .ServerOperation(false)
+        .Read(read => read.Action("List", "Genre"))
+        .Destroy(destroy => destroy.Action("Delete", "Genre"))
+        .Update(edit => edit.Action("Edit", "Genre"))
+    )
+
+)
+
+

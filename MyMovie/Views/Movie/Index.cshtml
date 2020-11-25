@@ -1,0 +1,51 @@
+﻿@model IEnumerable<MyMovie.Models.Movie>
+@section Styles{
+    <link rel="stylesheet" href="~/css/button.css" />
+}
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="text-center">
+    @(Html.Kendo().Grid<MyMovie.Models.Movie>
+      ()
+      .Name("Movie")
+      .Columns(columns =>
+      {
+          columns.Bound(p => p.Title);
+          columns.ForeignKey(p => p.GenreId, (System.Collections.IEnumerable)ViewData["genres"], "Id", "Name").Title("Genre");
+          columns.Bound(p => p.Score);
+          columns.Bound(p => p.Rating);
+          columns.Bound(p => p.Overview);
+          columns.Bound(p => p.ImageUrl);
+          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(150).HtmlAttributes(new {style="text-align: center;"});
+      })
+
+      .ToolBar(toolbar =>
+              {
+            toolbar.ClientTemplate(
+                "<a class='k-button create_button' href='" + Url.Action("Create", "Movie") + "' " + ">Add new movie</a>"
+                +
+                "<span class='k-textbox k-grid-search k-display-flex'> " +
+                    "<input autocomplete='off' placeholder='Search...' title='Search...' class='k-input'> " +
+                    "<span class='k-input-icon'> <span class='k-icon k-i-search'></span></span>" +
+                "</span>"
+            );
+      })
+      .Editable(editable => editable.Mode(GridEditMode.PopUp))
+      .Pageable()
+      .Sortable()
+      .DataSource(datasource => datasource
+          .Ajax()
+          .Model(model => model.Id(movie => movie.Id))
+          .PageSize(50)
+          .ServerOperation(false)
+          .Read(read => read.Action("List", "Movie"))
+          .Destroy(destroy => destroy.Action("Delete", "Movie"))
+          .Update(edit => edit.Action("Edit", "Movie"))
+      )
+
+    )
+
+
+</div>
