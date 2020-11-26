@@ -16,6 +16,7 @@
           columns.ForeignKey(p => p.GenreId, (System.Collections.IEnumerable)ViewData["genres"], "Id", "Name").Title("Genre");
           columns.Bound(p => p.Score);
           columns.Bound(p => p.Rating);
+          columns.Bound(p => p.ReleaseDate);
           columns.Bound(p => p.Overview);
           columns.Bound(p => p.ImageUrl);
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(150).HtmlAttributes(new {style="text-align: center;"});

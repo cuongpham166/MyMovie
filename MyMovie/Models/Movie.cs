@@ -32,11 +32,15 @@ namespace MyMovie.Models
         public decimal Rating { get; set; }
 
 
+        [DataType(DataType.Date)]
         [Column(TypeName ="Date")]
+        [DisplayFormat(DataFormatString = "{dd/MM/yyyy}")]
         public DateTime ReleaseDate { get; set; }
 
         [ScaffoldColumn(false)]
         public int GenreId { get; set; }
+
+        public List<MovieGenre> MovieGenres { get; set; }
 
     }
 }

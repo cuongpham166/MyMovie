@@ -38,7 +38,7 @@ namespace MyMovie.Controllers
             myModel.Genre = _db.Genre;
             myModel.Movie = _db.Movie;
             return View(myModel);
-        }*/ 
+        }*/
 
         public IActionResult Create()
         {
@@ -50,9 +50,8 @@ namespace MyMovie.Controllers
             return Json(_db.Genre, new Newtonsoft.Json.JsonSerializerSettings());
         }
 
-        [HttpPost]
-        public IActionResult Create(Movie obj)
-        {
+        /*[HttpPost]
+        public IActionResult Create(Movie obj){
             if (ModelState.IsValid)
             {
                 _db.Movie.Add(obj);
@@ -60,6 +59,34 @@ namespace MyMovie.Controllers
                 return RedirectToAction("Index");
             }
             return View(obj);
+        }*/
+
+        [HttpPost]
+        public IActionResult Create (MovieGenreVM moviegenreVM)
+        {
+            if (ModelState.IsValid)
+            {
+                Movie movie = new Movie();
+                movie.ImageUrl = moviegenreVM.Movie.ImageUrl;
+                movie.Overview = moviegenreVM.Movie.Overview;
+                movie.Rating = moviegenreVM.Movie.Rating;
+                movie.ReleaseDate = moviegenreVM.Movie.ReleaseDate;
+                movie.Score = moviegenreVM.Movie.Score;
+                movie.Title = moviegenreVM.Movie.Title;
+                _db.Movie.Add(movie);
+                _db.SaveChanges();
+
+                foreach (var genreID in moviegenreVM.selectedGenres)
+                {
+                    MovieGenre movieGenre = new MovieGenre();
+                    movieGenre.GenreId = genreID;
+                    movieGenre.MovieId = movie.Id;
+                    _db.MovieGenre.Add(movieGenre);
+                }
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(moviegenreVM);
         }
 
         [HttpPost]

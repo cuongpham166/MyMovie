@@ -17,5 +17,7 @@ namespace MyMovie.Models
         [Required]
         public string Name { get; set; }
 
+        public List<MovieGenre> MovieGenres { get; set; }
+
     }
 }
